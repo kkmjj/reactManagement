@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
 import './App.css';
 import Customer from './components/Customer';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+
+
+
 
 
 const customer =[{
@@ -17,8 +25,16 @@ const customer =[{
 class App extends Component {
  render(){
    return(
-     <div className="gray-backgroud">
-       {
+     <div>
+       <Table>
+         <TableHead>
+           <TableRow>
+             <TableCell>이름</TableCell>
+             <TableCell>생년월일</TableCell>
+           </TableRow>
+         </TableHead>
+         <TableBody>
+         {
          customer.map(c =>{
            return( <Customer
               key={c.id}
@@ -29,6 +45,9 @@ class App extends Component {
            />);
          })
        }
+         </TableBody>
+       </Table>
+       
      </div>
    );
  }

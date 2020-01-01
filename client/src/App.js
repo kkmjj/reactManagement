@@ -7,7 +7,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
+//materail 디자인 로딩기다리는 화면 디자인 
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles(theme => ({
+  progress: {
+   margin: theme.spacing.unit * 2 
+  }
+}));
 
 
 
@@ -16,11 +24,13 @@ import TableCell from '@material-ui/core/TableCell';
 class App extends Component {
 
 state ={
-  customers: ""
+  customers: "",
+  completed: 0
 }
 
 // api서버에 접근하여 데이터를 받아옴 
 componentDidMount(){
+  this.timer = setInterval(this.progress,20);
   this.callApi().then(res => this.setState({customers: res}))
   .catch(err => console.log(err));
 }
@@ -30,6 +40,13 @@ callApi = async () =>{
 
   return body;
 }
+
+progress = () =>
+{
+  const {completed} =this.state;
+  this.setState({completed: completed >=100 ? 0: completed + 1})
+}
+
 
  render(){
    return(
@@ -52,8 +69,18 @@ callApi = async () =>{
 
 
            />);
-         }) : ""}
-       }
+         }) : 
+         <TableRow>
+           <TableCell colSpan="2" align="center">
+           <div className={useStyles.progress}>
+      <CircularProgress variant="determinate" value={this.state.completed} />
+      
+    </div>
+           </TableCell>
+         </TableRow>
+         
+         }
+       
          </TableBody>
        </Table>
        

@@ -11,18 +11,26 @@ import TableCell from '@material-ui/core/TableCell';
 
 
 
-const customer =[{
-  'name': '홍길동',
-  'birthday': '931201'
 
-},
-{
-  'name': '김민준',
-  'birthday': '941201'
-
-}]
 
 class App extends Component {
+
+state ={
+  customers: ""
+}
+
+// api서버에 접근하여 데이터를 받아옴 
+componentDidMount(){
+  this.callApi().then(res => this.setState({customers: res}))
+  .catch(err => console.log(err));
+}
+callApi = async () =>{
+  const response = await fetch('/api/customers');
+  const body =await response.json();
+
+  return body;
+}
+
  render(){
    return(
      <div>
@@ -35,7 +43,8 @@ class App extends Component {
          </TableHead>
          <TableBody>
          {
-         customer.map(c =>{
+           // 배열형식을 map으로 다루기 
+         this.state.customers  ? this.state.customers.map(c =>{
            return( <Customer
               key={c.id}
               name={c.name}
@@ -43,7 +52,7 @@ class App extends Component {
 
 
            />);
-         })
+         }) : ""}
        }
          </TableBody>
        </Table>
